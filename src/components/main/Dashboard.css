@@ -1,0 +1,30 @@
+.dasboard > * {
+  margin: 0 12px;
+}
+
+.profileBox > * {
+  font-size: 14px;
+}
+
+.left-side-nav > * {
+  margin: 0 8px 0 6px;
+}
+.left-side-nav {
+  position: relative;
+  padding: 8px;
+  transition: 300ms;
+  cursor: pointer;
+  position: relative;
+}
+.left-side-nav:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  background-color: #ffc947;
+}
+.left-side-nav:hover {
+  box-shadow: inset 25em 0 0 0 #ffc947;
+}

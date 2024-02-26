@@ -1,0 +1,12 @@
+
+
+.landingPageWrapper {
+  background: #5d99dd;
+  background-image: radial-gradient(
+      at 86.8% 73.7%,
+      hsl(142, 62%, 54%) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 26.1% 72%, hsl(263, 61%, 65%) 0px, transparent 50%),
+    radial-gradient(at 75.2% 22.6%, hsl(70, 97%, 71%) 0px, transparent 50%);
+}

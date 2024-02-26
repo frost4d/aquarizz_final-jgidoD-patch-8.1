@@ -1,0 +1,20 @@
+.cardContent,
+.descriptionWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.imageWrapper {
+  flex: 1;
+  min-width: min(100%, 10em);
+}
+.descriptionWrapper {
+  flex: 4;
+  min-width: min(100%, 20em);
+}
+
+.descriptionWrapper > * {
+  flex: 1;
+  min-width: min(100%, 20em);
+}
