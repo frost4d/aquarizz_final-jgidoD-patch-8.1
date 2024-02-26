@@ -72,7 +72,7 @@ const AddDiscover = (props) => {
 
   const handleSubmitPost = async (data) => {
     const obj = {
-        authorName: data.authorName,
+        authorName: userProfile.name,
         authorID: user?.uid,
         postTitle: data.title,
         postContent: data.text,
@@ -81,7 +81,7 @@ const AddDiscover = (props) => {
         createdAt: data.createdAt || new Date().toISOString(),
     };
     try {
-      const docRef = await addDoc(collection(db, "discover"), obj);
+      await createPost(obj);
       toast({
         title: "Post Created.",
         description: "Post successfully published.",
@@ -89,8 +89,8 @@ const AddDiscover = (props) => {
         duration: 5000,
         position: "top",
       });
-    } catch (err) {
-      console.log(err.message);
+    } catch (error) {
+      console.error("Error adding document: ", error);
     }
     console.log(obj);
     setFile("");

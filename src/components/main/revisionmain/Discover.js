@@ -1,6 +1,7 @@
 import "./Discover.css";
 import { useEffect, useState } from "react";
-import { db, collection } from "../../../firebase/firebaseConfig";
+import { db } from "../../../firebase/firebaseConfig";
+import { doc, getDocs, collection } from "firebase/firestore";
 import {
   Box,
   Button,
@@ -14,7 +15,9 @@ import {
   Text,
   Input,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
 import Navigation from "./Navigation";
 import { Plus } from "react-feather";
 import AddDiscoverModal from "./AddDiscoverModal";
@@ -25,87 +28,67 @@ const Discover = () => {
   const primaryFont = '"Poppins", sans-serif';
   const tertiaryColor = "#6e6e6e";
   const addDiscover = useDisclosure();
+  const toast = useToast();
   const [discoverPosts, setDiscoverPosts] = useState([]);
+  const [post, setPost] = useState();
+  const { postId, userId } = useParams();
 
-  
   useEffect(() => {
-    const fetchData = async () => {
-      const querySnapshot = await db.collection("discover").get();
-      const posts = [];
+    const fetchDiscoverPosts = async () => {
+      const postsCollection = collection(db, "discover");
+      const querySnapshot = await getDocs(postsCollection);
+      const tempPosts = [];
       querySnapshot.forEach((doc) => {
-        posts.push(doc.data());
+        tempPosts.push({ id: doc.id, ...doc.data() });
       });
-      setDiscoverPosts(posts);
+      setDiscoverPosts(tempPosts);
     };
-    fetchData();
+    fetchDiscoverPosts();
   }, []);
-
-  // const discoverPost = [
-  //   {
-  //     id: 1,
-  //     authorLastName: "Doe",
-  //     authorFirstName: "John",
-  //     postContent:
-  //       "Quis nisi sunt dolore laborum aliquip sit commodo non laborum commodo aliqua. Eu do duis esse consequat ut excepteur magna. Sint eiusmod sit esse ex mollit duis in voluptate enim velit magna laboris.",
-  //     postTitle: "Velit quis nisi reprehenderit commodo aliquip eu.",
-  //     createdAt: "2hrs ago",
-  //   },
-  //   {
-  //     id: 2,
-  //     authorLastName: "Doe",
-  //     authorFirstName: "John",
-  //     postContent:
-  //       "Quis nisi sunt dolore laborum aliquip sit commodo non laborum commodo aliqua. Eu do duis esse consequat ut excepteur magna. Sint eiusmod sit esse ex mollit duis in voluptate enim velit magna laboris.",
-  //     postTitle: "Velit quis nisi reprehenderit commodo aliquip eu.",
-  //     createdAt: "2hrs ago",
-  //   },
-  //   {
-  //     id: 3,
-  //     authorLastName: "Doe",
-  //     authorFirstName: "John",
-  //     postContent:
-  //       "Quis nisi sunt dolore laborum aliquip sit commodo non laborum commodo aliqua. Eu do duis esse consequat ut excepteur magna. Sint eiusmod sit esse ex mollit duis in voluptate enim velit magna laboris.",
-  //     postTitle: "Velit quis nisi reprehenderit commodo aliquip eu.",
-  //     createdAt: "2hrs ago",
-  //   },
-  //   {
-  //     id: 4,
-  //     authorLastName: "Doe",
-  //     authorFirstName: "John",
-  //     postContent:
-  //       "Quis nisi sunt dolore laborum aliquip sit commodo non laborum commodo aliqua. Eu do duis esse consequat ut excepteur magna. Sint eiusmod sit esse ex mollit duis in voluptate enim velit magna laboris.",
-  //     postTitle: "Velit quis nisi reprehenderit commodo aliquip eu.",
-  //     createdAt: "2hrs ago",
-  //   },
-  //   {
-  //     id: 5,
-  //     authorLastName: "Doe",
-  //     authorFirstName: "John",
-  //     postContent:
-  //       "Quis nisi sunt dolore laborum aliquip sit commodo non laborum commodo aliqua. Eu do duis esse consequat ut excepteur magna. Sint eiusmod sit esse ex mollit duis in voluptate enim velit magna laboris.",
-  //     postTitle: "Velit quis nisi reprehenderit commodo aliquip eu.",
-  //     createdAt: "2hrs ago",
-  //   },
-  //   {
-  //     id: 6,
-  //     authorLastName: "Doe",
-  //     authorFirstName: "John",
-  //     postContent:
-  //       "Quis nisi sunt dolore laborum aliquip sit commodo non laborum commodo aliqua. Eu do duis esse consequat ut excepteur magna. Sint eiusmod sit esse ex mollit duis in voluptate enim velit magna laboris.",
-  //     postTitle: "Velit quis nisi reprehenderit commodo aliquip eu.",
-  //     createdAt: "2hrs ago",
-  //   },
-  // ];
 
   const handleSearchDiscover = (data) => {
     console.log(data);
   };
+
+  const handleAddDiscover = (formData) => {
+    // Add logic to save the form data to your database or state
+    console.log(formData);
+    // For example, you can update the discoverPosts state with the new data
+    setDiscoverPosts([...discoverPosts, formData]);
+    addDiscover.onClose(); // Close the modal after submitting
+    toast({
+      title: "Post Created.",
+      description: "Post successfully published.",
+      status: "success",
+      duration: 5000,
+      position: "top",
+    });
+  };
+  
+  // useEffect(() => {
+  //   const showPosts = async () => {
+  //     if (!postId) {
+  //       // Handle the case where postId is undefined
+  //       return;
+  //     }
+  //     const docRef = doc(db, "discover", postId);
+  //     const docSnap = await getDoc(docRef);
+  //     const tempVar = [];
+  //     if (docSnap.exists()) {
+  //       tempVar.push(docSnap.data());
+  //     }
+  //     setPost(tempVar);
+  //   };
+  //   showPosts();
+  // }, [postId]);
+
+
   return (
     <>
       <Box h="100vh">
         <Navigation />
         <Flex justify="space-between" p="0 86px 0px 64px">
-          <Heading fontFamily={primaryFont}>Discover</Heading>
+          <Heading>Discover</Heading>
           <Flex display={user ? "flex" : "none"} justify="space-between">
             <Button
               mr="12px"
@@ -125,11 +108,8 @@ const Discover = () => {
           </Flex>
         </Flex>
 
-        <Box className="discoverContentsWrapper" p="24px">
+        <Box p="24px">
           <Flex
-            // maxH="calc(100vh - 212px)"
-            // overflow="auto"
-            className="discoverContents"
             gap="24px 24px"
             flexWrap="wrap"
             justify="space-evenly"
@@ -138,8 +118,8 @@ const Discover = () => {
           >
             <Flex w="100%" justify="center" p="12px 24px">
               <form onSubmit={handleSearchDiscover}>
-                <Flex className="searchTags" w="100%" justify="space-between">
-                  <Input borderRadius="24px" placeholder="e.g. #tags" />
+                <Flex w="100%" justify="space-between">
+                  <Input borderRadius="24px" placeholder="Search" />
                   <Button p="12px 24px" type="submit" borderRadius="24px">
                     Search
                   </Button>
@@ -153,61 +133,35 @@ const Discover = () => {
               align="center"
               flexWrap="wrap"
             >
-              {/* <Box className="cardContents">
-                <Box className="cardHeader">
-                  <Button variant="link" color="#000">
-                    John Doe
-                  </Button>
-                </Box>
-                <Box className="imageWrapper" p="12px 12px">
-                  <Image src={require("../../../assets/design/aquarium.png")} />
-                </Box>
-                <Box className="cardFooter"></Box>
-              </Box> */}
-              {discoverPosts &&
-                discoverPosts.map((post) => (
-                  <>
-                    <Card
-                      key={post.id}
-                      h="600px"
-                      w="400px"
-                      // overflowY="hidden"
-                      // boxShadow="0 8px 12px #e1e1e1"
-                    >
-                      <CardBody>
-                        <Flex className="cardContent">
-                          <Box className="imageWrapper" w="100%">
-                            <Image
-                              objectFit="cover"
-                              w="100%"
-                              h="350px"
-                              src={require("../../../assets/design/aquarium.png")}
-                            />
-                          </Box>
-                        </Flex>
-                        <Flex justify="space-between" mt="24px">
-                          <Button variant="link" color="#333333">
-                            {post.authorFirstName} {post.authorLastName}
-                          </Button>
-                          <Text fontSize="xs" color={tertiaryColor} as="i">
-                            {post.createdAt}
-                          </Text>
-                        </Flex>
-                        <Box mt="12px">
-                          <Text fontSize="sm" color={tertiaryColor}>
-                            {post.postContent}
-                          </Text>
-                        </Box>
-                      </CardBody>
-
-                      {/* <Box m="0 16px 32px 24px">
-                        <Button bg={primaryColor} w="100%">
-                          View Product
-                        </Button>
-                      </Box> */}
-                    </Card>
-                  </>
-                ))}
+              {discoverPosts.map((post) => (
+                <Card key={post.id} h="600px" w="400px">
+                  <CardBody>
+                    <Flex>
+                      <Box w="100%">
+                        <Image
+                          objectFit="cover"
+                          w="100%"
+                          h="350px"
+                          src={post.postImage}
+                        />
+                      </Box>
+                    </Flex>
+                    <Flex justify="space-between" mt="24px">
+                      <Button variant="link" color="#333333">
+                        {post.authorName}
+                      </Button>
+                      <Text fontSize="xs" color="#6e6e6e" as="i">
+                        {post.createdAt.toDate().toLocaleString()}
+                      </Text>
+                    </Flex>
+                    <Box mt="12px">
+                      <Text fontSize="sm" color="#6e6e6e">
+                        {post.content}
+                      </Text>
+                    </Box>
+                  </CardBody>
+                </Card>
+              ))}
             </Flex>
           </Flex>
         </Box>
