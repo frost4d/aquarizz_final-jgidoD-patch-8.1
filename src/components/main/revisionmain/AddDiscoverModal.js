@@ -52,9 +52,11 @@ const AddDiscover = (props) => {
   const handleImageChange = async (e) => {
     setFile(e.target.files[0]);
 
+
     const imageRef = ref(
       storage,
       `postImages/${e.target.files[0].name + "&" + userProfile.name}`
+      // `postImages/${e.target.files[0].name + "&" + userProfile.name}`
     );
     await uploadBytes(imageRef, e.target.files[0]).then((snapshot) => {
       console.log("Uploaded a blob or file!");
@@ -81,7 +83,8 @@ const AddDiscover = (props) => {
         createdAt: data.createdAt || new Date().toISOString(),
     };
     try {
-      await createPost(obj);
+      await addDoc(collection(db, 'discover'), obj);
+      // await createPost(obj);
       toast({
         title: "Post Created.",
         description: "Post successfully published.",
@@ -96,6 +99,7 @@ const AddDiscover = (props) => {
     setFile("");
     setImageUrl("");
     reset();
+    props.onClose();
   };
 
   return (
@@ -137,8 +141,11 @@ const AddDiscover = (props) => {
                     type="file"
                     name="file"
                     id="file"
+                    accept=".jpg, .jpeg, .png"
                     class="inputfile"
                     multiple
+                    onChange={handleImageChange}
+                    
                   />
                 </Box>
                 <Box>

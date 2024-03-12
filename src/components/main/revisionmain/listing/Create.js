@@ -1,3 +1,4 @@
+
 import {
   Modal,
   ModalBody,
@@ -21,6 +22,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../../context/AuthContext";
 import { db, storage } from "../../../../firebase/firebaseConfig";
+import { addDoc, collection } from "firebase/firestore"; 
 import {
   ref,
   uploadBytes,
@@ -68,17 +70,18 @@ const Create = (props) => {
   
     const handleSubmitPost = async (data) => {
       const obj = {
-        authorName: data.authorName,
+        authorName: userProfile.name,
         authorID: user?.uid,
         postTitle: data.title,
-        postContent: data.content,
+        postContent: data.text,
         postImage: file ? imageUrl : "", // Optional chaining to avoid null value
         tag: data.tag,
         createdAt: data.createdAt || new Date().toISOString(),
         price: data.price,
       };
       try {
-        await createPost(obj);
+        await addDoc(collection(db, 'shop'), obj);
+        // await createPost(obj);
         toast({
           title: "Post Created.",
           description: "Post successfully published.",
@@ -93,43 +96,90 @@ const Create = (props) => {
       setFile("");
       setImageUrl("");
       reset();
+      props.onClose();
     };
 
   return (
     <>
-      <Box className="addProductWrapper">
-        <Box className="headerWrapper">
-          <Heading>Add Product</Heading>
-        </Box>
-        <Box className="addProductContentWrapper">
-          <Box className="addProductForm">
-            <form>
-              <Box>
-                <FormLabel>Product Name</FormLabel>
-                <Input />
+      <Modal isOpen={props.isOpen} onClose={props.onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody>
+            <form onSubmit={handleSubmit(handleSubmitPost)}>
+              <Box textAlign="center" my="24px">
+                <Heading fontSize="md">Add Product</Heading>
               </Box>
-              <Box>
+              <Flex
+                className="addDiscoverForm"
+                flexDirection="column"
+                justify="center"
+              >
+                <Box mb={4}>
+                  <FormLabel>Product Name</FormLabel>
+                  <Input {...register("title", { required: true })} />
+                  {errors.title && <Text color="red">Title is required</Text>}
+                </Box>
+
+                <Box>
                 <FormLabel>Description</FormLabel>
-                <Input />
-              </Box>
-              <Box>
-                <FormLabel>Add Media</FormLabel>
-                <Input type="file" />
-              </Box>
-              <Box>
-                <FormLabel>Tag/s</FormLabel>
-                <Input />
-              </Box>
-              <Box>
-                <FormLabel>Price</FormLabel>
-                <Input />
-              </Box>
-              <Button>Save & Publish</Button>
-              <Button>Cancel</Button>
+                  <Textarea
+                    placeholder="Text"
+                    {...register("text", { required: true })}
+                    aria-invalid={errors.text ? "true" : "false"}
+                  />
+                  {errors.text?.type === "required" && (
+                    <p style={{ color: "#d9534f", fontSize: "12px" }}>
+                      Text is required
+                    </p>
+                  )}
+                </Box>
+                <Box p="12px 0">
+                  <Input
+                    className="inputFileDiscover"
+                    type="file"
+                    name="file"
+                    id="file"
+                    accept=".jpg, .jpeg, .png"
+                    class="inputfile"
+                    multiple
+                    onChange={handleImageChange}
+                    
+                  />
+                </Box>
+                <Box>
+                  <Input
+                    placeholder="e.g. #tag"
+                    {...register("tag", { required: true })}
+                    aria-invalid={errors.tag ? "true" : "false"}
+                  />
+                  {errors.tag?.type === "required" && (
+                    <p style={{ color: "#d9534f", fontSize: "12px" }}>
+                      Tag is required
+                    </p>
+                  )}
+                </Box>
+                <Box>
+                  <Input
+                    placeholder="Price"
+                    {...register("price", { required: true })}
+                    aria-invalid={errors.tag ? "true" : "false"}
+                  />
+                  {errors.tag?.type === "required" && (
+                    <p style={{ color: "#d9534f", fontSize: "12px" }}>
+                      price is required
+                    </p>
+                  )}
+                </Box>
+
+                <Button type="submit" bg={primaryColor} onClick={props.fetchData}>
+                  Publish
+                </Button>
+                <Button onClick={props.onClose}>Cancel</Button>
+              </Flex>
             </form>
-          </Box>
-        </Box>
-      </Box>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

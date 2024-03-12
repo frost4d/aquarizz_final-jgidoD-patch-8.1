@@ -1,7 +1,7 @@
 import "./Discover.css";
 import { useEffect, useState } from "react";
 import { db } from "../../../firebase/firebaseConfig";
-import { doc, getDocs, collection } from "firebase/firestore";
+import { doc, getDocs, collection, addDoc } from "firebase/firestore";
 import {
   Box,
   Button,
@@ -53,6 +53,7 @@ const Discover = () => {
   const handleAddDiscover = (formData) => {
     // Add logic to save the form data to your database or state
     console.log(formData);
+    const docRef = addDoc(collection(db, "discover"), formData);
     // For example, you can update the discoverPosts state with the new data
     setDiscoverPosts([...discoverPosts, formData]);
     addDiscover.onClose(); // Close the modal after submitting
@@ -143,6 +144,7 @@ const Discover = () => {
                           w="100%"
                           h="350px"
                           src={post.postImage}
+                          alt="Post Image"
                         />
                       </Box>
                     </Flex>
@@ -151,12 +153,13 @@ const Discover = () => {
                         {post.authorName}
                       </Button>
                       <Text fontSize="xs" color="#6e6e6e" as="i">
-                        {post.createdAt.toDate().toLocaleString()}
+                      {post.createdAt instanceof Date ? post.createdAt.toLocaleString() : new Date(post.createdAt).toLocaleString()}
+                        {/* {post.createdAt.toDate().toLocaleString()} */}
                       </Text>
                     </Flex>
                     <Box mt="12px">
                       <Text fontSize="sm" color="#6e6e6e">
-                        {post.content}
+                        {post.postContent}
                       </Text>
                     </Box>
                   </CardBody>
