@@ -1,0 +1,113 @@
+.mainWrapper {
+  background: #5d99dd;
+  background-image: radial-gradient(
+      at 86.8% 73.7%,
+      hsl(142, 62%, 54%) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 26.1% 72%, hsl(263, 61%, 65%) 0px, transparent 50%),
+    radial-gradient(at 75.2% 22.6%, hsl(70, 97%, 71%) 0px, transparent 50%);
+}
+
+.loginBtn {
+  border-top: 0.5px solid #fff;
+}
+
+.createListingBtn {
+  border-top: 0.5px solid #ffdb88;
+}
+.cardWrapper {
+  backdrop-filter: blur(200px);
+  box-shadow: 0 24px 32px 1px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+.titleText > * {
+  margin: 24px 0;
+}
+
+.searchWrapper {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+#search,
+#location {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.tagsWrapper > * {
+  margin: 0 24px;
+  cursor: pointer;
+  transition: 300ms;
+}
+
+.fish,
+.decor,
+.feeds,
+.aquarium {
+  transition: 500ms;
+}
+
+.fishWrapper:hover .fish,
+.decorWrapper:hover .decor,
+.feedsWrapper:hover .feeds,
+.aquariumWrapper:hover .aquarium {
+  scale: 1.05;
+}
+/* 
+.tagsWrapper > *:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.tagsWrapper > *:active {
+  background-color: rgba(255, 255, 255);
+} */
+.boxFilter {
+  position: relative;
+  transition: 1s;
+}
+
+/* .boxFilter::before {
+  content: "";
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #fff;
+} */
+/* .boxFilter::before {
+  transition: 1s;
+} */
+.boxFilter:hover.boxFilter::before {
+  z-index: 2;
+  content: "";
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background-color: #fff;
+}
+
+.footerWrapper > * {
+  margin: 24px 70px;
+}
+
+.socialLink > * {
+  margin: 12px 12px 0 0;
+}
+.socialLink > *:hover {
+  cursor: pointer;
+}
+.addressWrapper > * {
+  margin: 3px;
+}
+.shopLink > *,
+.supportLink > * {
+  margin: 3px 0;
+}
+
+.supportLink > *:hover,
+.shopLink > *:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -1,0 +1,25 @@
+.loginCard .cardBody > * {
+  margin: 32px 0 16px 0;
+}
+
+.loginForm > * {
+  margin: 16px 0;
+}
+
+.signUpBtn {
+  position: relative;
+  background-color: #ffc947;
+  border: none;
+}
+
+.signUpBtn::before {
+  content: "";
+  position: absolute;
+  background-color: #fff;
+  top: 2;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  border-bottom-left-radius: 16px;
+  border-top-left-radius: 16px;
+}
