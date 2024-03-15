@@ -1,5 +1,5 @@
 import "./Shop.css";
-import { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseConfig";
 import {
@@ -67,48 +67,7 @@ const Shop = () => {
       position: "top",
     });
   };
-  // const product = [
-  //   {
-  //     id: 1,
-  //     product_name: "Fish",
-  //     name: "John Doe",
-  //     description:
-  //       "Irure tempor labore excepteur adipisicing et nisi quis velit. Elit occaecat voluptate minim occaecat aliqua ea irure excepteur et anim do minim sint. Culpa sunt voluptate veniam ea exercitation labore. Magna consequat culpa ullamco occaecat mollit qui quis duis voluptate mollit. Nulla dolor cillum ex exercitation sint nostrud.",
-  //     price: 1000.0,
-  //     tag: "accessories",
-  //     createdAt: "2days ago",
-  //   },
-  //   {
-  //     id: 2,
-  //     product_name: "Fish",
-  //     name: "John Doe",
-  //     description:
-  //       "Irure tempor labore excepteur adipisicing et nisi quis velit. Elit occaecat voluptate minim occaecat aliqua ea irure excepteur et anim do minim sint. Culpa sunt voluptate veniam ea exercitation labore. Magna consequat culpa ullamco occaecat mollit qui quis duis voluptate mollit. Nulla dolor cillum ex exercitation sint nostrud.",
-  //     price: 1000.0,
-  //     tag: "fish",
-  //     createdAt: "2days ago",
-  //   },
-  //   {
-  //     id: 3,
-  //     product_name: "Fish",
-  //     name: "John Doe",
-  //     description:
-  //       "Irure tempor labore excepteur adipisicing et nisi quis velit. Elit occaecat voluptate minim occaecat aliqua ea irure excepteur et anim do minim sint. Culpa sunt voluptate veniam ea exercitation labore. Magna consequat culpa ullamco occaecat mollit qui quis duis voluptate mollit. Nulla dolor cillum ex exercitation sint nostrud.",
-  //     price: 1000.0,
-  //     tag: "feeds",
-  //     createdAt: "2days ago",
-  //   },
-  //   {
-  //     id: 4,
-  //     product_name: "Fish",
-  //     name: "John Doe",
-  //     description:
-  //       "Irure tempor labore excepteur adipisicing et nisi quis velit. Elit occaecat voluptate minim occaecat aliqua ea irure excepteur et anim do minim sint. Culpa sunt voluptate veniam ea exercitation labore. Magna consequat culpa ullamco occaecat mollit qui quis duis voluptate mollit. Nulla dolor cillum ex exercitation sint nostrud.",
-  //     price: 1000.0,
-  //     tag: "aquarium",
-  //     createdAt: "2days ago",
-  //   },
-  // ];
+
   return (
     <>
       <Box>
@@ -122,10 +81,7 @@ const Shop = () => {
               leftIcon={<Plus size={16} />}
               onClick={modalShop.onOpen}
             >
-              <Create
-                isOpen={modalShop.isOpen}
-                onClose={modalShop.onClose}
-              />
+              <Create isOpen={modalShop.isOpen} onClose={modalShop.onClose} />
               Create
             </Button>
             <Modal>
@@ -150,7 +106,6 @@ const Shop = () => {
             align="center"
             mt="64px"
           >
-            
             {shopPosts &&
               shopPosts.map((post) => (
                 <>
@@ -168,11 +123,11 @@ const Shop = () => {
                     <CardBody>
                       <Flex className="cardContent">
                         <Box className="imageWrapper">
-                        <Image
-                          objectFit="cover"
-                          src={post.postImage}
-                          alt="Post Image"
-                        />
+                          <Image
+                            objectFit="cover"
+                            src={post.postImage}
+                            alt="Post Image"
+                          />
                         </Box>
                         <Box className="descriptionWrapper">
                           <Flex justify="space-between">

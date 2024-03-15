@@ -41,7 +41,7 @@ import {
   Twitter,
 } from "react-feather";
 import LoginModal from "./LoginModal";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 import logo from "../../../assets/logo2.png";
 import { ChevronDownIcon } from "@chakra-ui/icons";
@@ -80,27 +80,40 @@ const Navigation = () => {
             <Image src={logo} />
           </Box>
           <Flex className="navbarButtons" justify="end" align="center" w="100%">
-            <Button
-              variant="ghost"
-              color="#000"
-              rightIcon={<ShoppingBag size={16} />}
-              _hover={{ bg: "rgba(249,249,249,1)" }}
-              onClick={() => navigate("/shop")}
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "navlink_isActive" : "navlink_inactive"
+              }
+              to="/shop"
             >
-              Shop
-            </Button>
-            <Button
-              variant="ghost"
-              color="#000"
-              rightIcon={<Compass size={16} />}
-              _hover={{
-                bg: "rgba(249,249,249,1)",
-              }}
-              onClick={() => navigate("/discover")}
+              <Button
+                // variant="ghost"
+                color="#000"
+                rightIcon={<ShoppingBag size={16} />}
+                // _hover={{ bg: "rgba(249,249,249,1)" }}
+                // onClick={() => navigate("/shop")}
+              >
+                Shop
+              </Button>
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "navlink_isActive" : "navlink_inactive"
+              }
+              to="/discover"
             >
-              Discover
-            </Button>
-
+              <Button
+                // variant="ghost"
+                color="#000"
+                rightIcon={<Compass size={16} />}
+                // _hover={{
+                //   bg: "rgba(249,249,249,1)",
+                // }}
+                // onClick={() => navigate("/discover")}
+              >
+                Discover
+              </Button>
+            </NavLink>
             {userProfile ? (
               <>
                 <Menu>

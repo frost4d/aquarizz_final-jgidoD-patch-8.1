@@ -1,3 +1,11 @@
 .navbarButtons > * {
   margin: 0 24px;
 }
+
+.navlink:active {
+  border-bottom: 1px solid red;
+}
+
+.navlink_isActive {
+  border-bottom: 1px solid #ffc947;
+}

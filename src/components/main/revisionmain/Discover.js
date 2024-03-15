@@ -22,6 +22,7 @@ import Navigation from "./Navigation";
 import { Plus } from "react-feather";
 import AddDiscoverModal from "./AddDiscoverModal";
 import { UserAuth } from "../../context/AuthContext";
+import { formatDistanceToNow } from "date-fns";
 const Discover = () => {
   const { user } = UserAuth();
   const primaryColor = "#FFC947";
@@ -65,7 +66,7 @@ const Discover = () => {
       position: "top",
     });
   };
-  
+
   // useEffect(() => {
   //   const showPosts = async () => {
   //     if (!postId) {
@@ -82,7 +83,6 @@ const Discover = () => {
   //   };
   //   showPosts();
   // }, [postId]);
-
 
   return (
     <>
@@ -130,17 +130,17 @@ const Discover = () => {
             <Flex
               w="100%"
               gap="24px 12px"
-              justify="space-evenly"
+              justify="center"
               align="center"
               flexWrap="wrap"
             >
               {discoverPosts.map((post) => (
-                <Card key={post.id} h="600px" w="400px">
+                <Card key={post.id} w="400px" border="1px solid #e1e1e1">
                   <CardBody>
                     <Flex>
                       <Box w="100%">
                         <Image
-                          objectFit="cover"
+                          objectFit="contain"
                           w="100%"
                           h="350px"
                           src={post.postImage}
@@ -153,7 +153,10 @@ const Discover = () => {
                         {post.authorName}
                       </Button>
                       <Text fontSize="xs" color="#6e6e6e" as="i">
-                      {post.createdAt instanceof Date ? post.createdAt.toLocaleString() : new Date(post.createdAt).toLocaleString()}
+                        {formatDistanceToNow(post.createdAt)} ago
+                        {/* {post.createdAt instanceof Date
+                          ? post.createdAt.toLocaleString()
+                          : new Date(post.createdAt).toLocaleString()} */}
                         {/* {post.createdAt.toDate().toLocaleString()} */}
                       </Text>
                     </Flex>
