@@ -87,6 +87,7 @@ const Navigation = () => {
               to="/shop"
             >
               <Button
+                borderRadius="0"
                 // variant="ghost"
                 color="#000"
                 rightIcon={<ShoppingBag size={16} />}
@@ -103,6 +104,7 @@ const Navigation = () => {
               to="/discover"
             >
               <Button
+                borderRadius="0"
                 // variant="ghost"
                 color="#000"
                 rightIcon={<Compass size={16} />}
@@ -155,7 +157,7 @@ const Navigation = () => {
               bg={primaryColor}
               color="#000"
               rightIcon={<Edit size={16} />}
-              _hover={{ bg: "rgba(249,249,249,1)" }}
+              _hover={{ bg: "#ffd36b" }}
               onClick={() => {
                 user ? (
                   navigate("/shop")

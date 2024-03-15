@@ -25,6 +25,7 @@ import SearchInput from "./components/SearchInput";
 import { UserAuth } from "../../context/AuthContext";
 import { Plus } from "react-feather";
 import Create from "./listing/Create";
+import { formatDistanceToNow } from "date-fns";
 const Shop = () => {
   const { user } = UserAuth();
   const addShop = useDisclosure();
@@ -104,19 +105,24 @@ const Shop = () => {
             flexWrap="wrap"
             justify="space-evenly"
             align="center"
-            mt="64px"
+            my="64px"
           >
             {shopPosts &&
               shopPosts.map((post) => (
                 <>
-                  <Card key={post.id} w="600px" h="360px">
+                  <Card
+                    key={post.id}
+                    border="1px solid #e1e1e1"
+                    w="600px"
+                    h="360px"
+                  >
                     <CardHeader>
                       <Flex justify="space-between">
                         <Button variant="link" color="#333333">
                           {post.authorName}
                         </Button>
                         <Text fontSize="xs" color={tertiaryColor} as="i">
-                          {post.createdAt}
+                          {formatDistanceToNow(post.createdAt)} ago
                         </Text>
                       </Flex>
                     </CardHeader>
@@ -137,7 +143,7 @@ const Shop = () => {
                             <Text as="b">P{post.price}</Text>
                           </Flex>
                           <Text fontSize="xs" as="i" color={tertiaryColor}>
-                            #{post.tag}
+                            {post.tag}
                           </Text>
 
                           <Text fontSize="sm" color={tertiaryColor}>
